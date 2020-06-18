@@ -1,7 +1,7 @@
 # Riot-API-Wrapper
 Naive implementation of a wrapper for fetching data from Riot's Teamfight Tactics API
 
-Motivation: The API keys Riot supply for the development stage have very low request rate limits (overall, a maximum of 100 requests every 2 minutes, for each server). However, for the product I was aiming at developing, I calculated that I would need up to hundreds of thousands of weekly requests based on the amount of data I needed. With that in mind, I created this nonstop script that fetchs TFT match history data from Riot's API and stores it in my local MongoDB database.
+Motivation: The API keys supplied by Riot for the development stage of products have very low request rate limits (overall, a maximum of 100 requests every 2 minutes, for each server). However, for the product I was aiming at developing, I calculated that I would need up to hundreds of thousands of weekly requests based on the amount of data I needed. With that in mind, I created this nonstop script that fetchs TFT match history data from Riot's API and stores it in my local MongoDB database.
 
 Usage: There are a few variables inside the script that need to be set for adjusting how the fetching happens. As is, when you run the script, the flow of the nonstop script is the following:
 
