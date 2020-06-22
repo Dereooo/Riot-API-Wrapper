@@ -4,10 +4,10 @@ import os
 import json
 import time
 import threading
-
+from pymongo import MongoClient
 from tftools.riot_api import RiotApiWrapper
 
-def match_grab_loop(api, tiers_to_fetch = [], regions_to_fetch = [], game_version = None):
+def match_grab_loop(api, tiers_to_fetch = [], regions_to_fetch = []):
 
     try:
         def handle_error(response):
@@ -97,10 +97,10 @@ def match_grab_loop(api, tiers_to_fetch = [], regions_to_fetch = [], game_versio
                         match_info = response
 
                         # If a game version was provided, move on to the next player once you reach a different version
-                        if game_version:
-                            match_version = match_info['info']['game_version']
-                            if not match_version.lower().replace('version ','').startswith(game_version):
-                                break
+                        
+                        match_version = match_info['info']['game_version']
+                        if match_version.lower().replace('version ','').startswith('10.11'):
+                            break
 
                         db.matches.insert_one(match_info)
                         print(f'Match {match} added')
@@ -111,9 +111,7 @@ def match_grab_loop(api, tiers_to_fetch = [], regions_to_fetch = [], game_versio
 
 
 if __name__ == '__main__':
-    
-    # Set up your mongodb as db
-    from pymongo import MongoClient
+
     client = MongoClient()
     db = client['tfstacticsDB']
 
@@ -128,7 +126,7 @@ if __name__ == '__main__':
         new_riot_api = RiotApiWrapper(RIOT_API_KEY)
         new_thread = threading.Thread(
             target=match_grab_loop,
-            args=(new_riot_api, RiotApiWrapper().high_elo, regions_list, '10.12')
+            args=(new_riot_api, RiotApiWrapper().high_elo, regions_list)
             )
         thread_list.append(new_thread)
         new_thread.start()
